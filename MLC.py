@@ -7,7 +7,6 @@ from ClassifierChain import ClassifierChain
 
 # Generate a random multi-label classification problem
 X, y = make_multilabel_classification(n_samples=1000, n_features=10, n_classes=5, n_labels=3, random_state=42)
-y = y[:800, :]
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
