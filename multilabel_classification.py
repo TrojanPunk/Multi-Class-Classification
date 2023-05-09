@@ -1,27 +1,45 @@
-from sklearn.datasets import make_multilabel_classification
-from sklearn.multioutput import ClassifierChain
+import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score
-from sklearn.tree import DecisionTreeClassifier
+from skmultilearn.problem_transform import ClassifierChain
+from keras.models import Sequential
+from keras.layers import Dense, Dropout
+from sklearn.metrics import accuracy_score, hamming_loss
 
-# generate sample dataset
-X, y = make_multilabel_classification(n_samples=1000, n_features=10, n_classes=5, random_state=42)
+# Load the emotions dataset
+data = pd.read_csv('emotions.csv')
 
-# split data into train and test sets
+# Split the data into features and labels
+X = data.iloc[:, :-6].values  # features
+y = data.iloc[:, -6:].values  # labels
+
+# Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# create classifier chains object with base estimator as decision tree
-classifier = ClassifierChain(base_estimator=DecisionTreeClassifier(random_state=42), order='random', random_state=42)
+# Define the neural network model
+model = Sequential()
+model.add(Dense(64, input_dim=X_train.shape[1], activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(y_train.shape[1], activation='sigmoid'))
 
-# train the model
+# Train the classifier chain model using the neural network as the base classifier
+classifier = ClassifierChain(model)
+
+# Compile the model
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# Fit the model to the training data
 classifier.fit(X_train, y_train)
 
-# make predictions on test set
+# Make predictions on the testing data
 y_pred = classifier.predict(X_test)
 
-# evaluate performance
+# Evaluate the model using accuracy and hamming loss metrics
 accuracy = accuracy_score(y_test, y_pred)
-f1 = f1_score(y_test, y_pred, average='micro')
+hamming_loss = hamming_loss(y_test, y_pred)
 
-print("Accuracy:", accuracy)
-print("F1 score:", f1)
+# Print the evaluation metrics
+print(f"Accuracy: {accuracy}")
+print(f"Hamming Loss: {hamming_loss}")
