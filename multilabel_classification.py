@@ -22,7 +22,7 @@ model.add(Dense(64, input_dim=X_train.shape[1], activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(32, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(y_train.shape[1], activation='sigmoid'))
+model.add(Dense(y_train.shape[1], activation='softmax'))
 
 # Train the classifier chain model using the neural network as the base classifier
 classifier = ClassifierChain(model)
