@@ -3,9 +3,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.multioutput import MultiOutputClassifier
 from CC import ClassifierChain
-from skmultilearn.utils import remove_unlabeled_samples
-from imblearn.under_sampling import RandomUnderSampler
 
 # Load the emotions dataset
 emotions_df = pd.read_csv('emotions.csv')
@@ -21,15 +20,7 @@ y = mlb.fit_transform(y)
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Undersample the majority class
-rus = RandomUnderSampler(sampling_strategy='auto', random_state=42)
-X_train, y_train = rus.fit_resample(X_train, y_train)
-
-# Remove unlabeled samples
-X_train, y_train = remove_unlabeled_samples(X_train, y_train)
-X_test, y_test = remove_unlabeled_samples(X_test, y_test)
-
-# Create the ClassifierChain model
+# Create the MultiOutputClassifier model
 base_model = GradientBoostingClassifier(n_estimators=100, max_depth=5, random_state=42)
 classifier_chain = ClassifierChain(base_model, order=[0, 1, 2, 3, 4, 5], random_state=42)
 
