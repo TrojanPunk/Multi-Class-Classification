@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, hamming_loss
 from sklearn.model_selection import train_test_split
-from skmultilearn.problem_transform import ClassifierChain
+from ClassifierChain import *
 
 df = pd.read_csv("emotions.csv")
 print(df.head())
@@ -28,5 +28,5 @@ def build_model(model, mlb_estimator, xtrain, ytrain, xtest, ytest):
     return result
 
 
-clf_chain_model = build_model(GradientBoostingClassifier(), ClassifierChain, X_train, y_train, X_test, y_test)
+clf_chain_model = build_model(GradientBoostingClassifier(), ClassifierChain.predict(X), X_train, y_train, X_test, y_test)
 print(clf_chain_model)
