@@ -13,11 +13,6 @@ X_train, X_test, y_train, y_test = train_test_split(data.iloc[:, :-6],
                                                     test_size=0.2,
                                                     random_state=42)
 
-# Binarize the labels
-mlb = MultiLabelBinarizer()
-y_train = mlb.fit_transform(y_train)
-y_test = mlb.transform(y_test)
-
 # Train the classifier chains model
 classifier = ClassifierChain(SVC(kernel='linear', probability=True, random_state=42), order='random', random_state=42)
 classifier.fit(X_train, y_train)
