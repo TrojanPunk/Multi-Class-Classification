@@ -8,5 +8,5 @@ print(df.tail())
 X = df.iloc[:, :-6].values
 y = df.iloc[:, -6:].values
 
-# print(X)
+print(X)
 print(y)
