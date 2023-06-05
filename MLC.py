@@ -58,6 +58,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Define the base classifier
 base_classifier = RandomForestClassifier()
 
+# Reshape y to match the number of samples
+y_train = np.reshape(y_train, (y_train.shape[0], -1))
+y_test = np.reshape(y_test, (y_test.shape[0], -1))
+
 # Build the classifier chain
 classifier_chain = ClassifierChain(base_classifier)
 
