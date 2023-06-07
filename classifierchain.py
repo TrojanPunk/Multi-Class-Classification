@@ -1,3 +1,5 @@
+# Program that creates a classifier chain
+
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils import check_X_y, check_array, check_consistent_length

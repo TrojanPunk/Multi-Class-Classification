@@ -1,4 +1,4 @@
-## Performing multi-label Classification using the in-built ClassifierChain module.
+## Performing multi-label Classification using classifierchain.py program
 
 import numpy as np
 import pandas as pd
